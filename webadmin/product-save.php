@@ -3,11 +3,11 @@ require("connect.php");
 $postdata = file_get_contents("php://input");
 
 if (isset($postdata) && !empty($postdata)){
+   
     $request  = json_decode($postdata);
-    echo "hello var data";
-    var_dump($request);
-    $name = $request['Name'];
-    $location = $request['Location'];
+    var_dump($postdata);
+    $name = $_POST['Name'];
+    $location = $_POST['Location'];
     $category = $request['Category'];
     $photo = $request['Photo'];
     $description = $request['Description'];

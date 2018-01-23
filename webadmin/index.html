@@ -46,17 +46,18 @@
 			</div>
 			<div class="form-group">
 					<label for="Location">Location:</label>
-					<select class="form-control" ng-options="item.Location for item in loc" ng-model="Location" ng-init="getLocation()">
-							<option value="item.Id" disabled selected>Select Location</option>
+					<select class="form-control" ng-options="x.Location for x in loc" ng-model="Location">
+							<option value="x.Id"></option>
 					</select>
 			</div>
 
 			<div class="form-group">
 					<label for="Category">Category:</label>
-					<select  class="form-control"  ng-options="item.Category for item in cat" ng-model="Category" ng-init="getCategory()">
-							<option value="item.Id" disabled selected>Select Location</option>
+					<select  class="form-control"  ng-options="s.Category for s in cat" ng-model="Category" ng-init="getCategory()">
+							<option value="s.Id" disabled selected>Select Location</option>
 					</select>
-			</div>
+			</div> 
+
 			<div class="form-group">
 					<label for="Photo">Photo Filename:</label>
 					<input type="text" class="form-control" id="phot" placeholder="Enter Photo" ng-model="Photo">
@@ -101,24 +102,27 @@ app.controller('TenantController', function($scope, $http) {
 	};
 
 	//function save tenant
-	var data = $.param({
-                Name: $scope.Name,
-				Location: $scope.Location,
-				Category: $scope.Category,
-				Photo: $scope.Photo,
-				Description: $scope.Description,
-				Email: $scope.Email,
-				Contact: $scope.Contact,
-				Flag: $scope.Flag
+	
+	$scope.saveTenant = function(){
+		
+		var data = $.param({
+                'Name': $scope.Name,
+				'Location': $scope.Location,
+				'Category': $scope.Category,
+				'Photo': $scope.Photo,
+				'Description': $scope.Description,
+				'Email': $scope.Email,
+				'Contact': $scope.Contact,
+				'Flag': $scope.Flag
 			});
 				
-	var config = {
+		var config = {
 	               headers : {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
                 }
-            }		
-	$scope.saveTenant = function(){
-		$http.post('product-save.php', data, config)
+			}		
+			
+		$http.post('product-save.php', data,config)
 		.then(function (response) {  $scope.getTenant();console.log(response.data,response.status); });
 	};
 
