@@ -8,16 +8,36 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <body>
 
-<div ng-app="" class="container">
+<div class="container">
 
-<div class="row">
-	<div class="col-md-12">Tenant Control panel</div>
-</div>
-<div class="row">
-	<div class="col-md-12">Tenant List</div>
-</div>
+	<div class="row">
+		<div class="col-md-12"><p><h2>Tenant Control panel</h2></p></div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">Tenant List</div>	
+	</div>
+
+	<div class="row" ng-app="myApp"  ng-controller="TenantController">
+		<div class="col-md-12">
+				<table width="100%">
+						<tr ng-repeat="x in names">
+						  <td>{{ x.Name }}</td>
+						  <td>{{ x.Location }}</td>
+						  <td>{{ x.Email }}</td>
+						</tr>
+					  </table>
+		</div>	
+	</div>
 
 </div>
+<script lang="javascript">
+
+var app = angular.module('myApp', []);
+app.controller('TenantController', function($scope, $http) {
+    $http.get("product.php")
+    .then(function (response) {$scope.names = response.data.records;});
+});
+</script>
 
 </body>
 </html>
