@@ -16,7 +16,7 @@
 		<div class="col-md-12">Tenant List</div>	
 	</div>
 
-	<div class="row" ng-app="myApp"  ng-controller="TenantController">
+	<div class="row" ng-app="myApp"  ng-cloak ng-controller="TenantController" ng-init="getTenant()">
 		<div class="col-md-12">
 				<table class="table table-striped">
 						<thead class="thead-inverse">
@@ -33,19 +33,107 @@
 						  <td>{{ x.Name }}</td>
 						  <td>{{ x.Location }}</td>
 						  <td>{{ x.Email }}</td>
-						  <td><button>Delete</button><button>Edit</button></td>
+						  <td><button ng-click="deleteTenant(x.Id)">Delete</button><button ng-click="editTenant(x.Id)">Edit</button></td>
 						</tr>
 					  </table>
 		</div>	
+		<div class="col-md-6">
+		<form>
+		<h2>Add / Edit Tenant</h2>
+			<div class="form-group">
+			  <label for="Name">Tenant Name:</label>
+			  <input type="text" class="form-control" id="Name" placeholder="Enter Name" ng-model="Name">
+			</div>
+			<div class="form-group">
+					<label for="Location">Location:</label>
+					<select class="form-control" ng-options="item.Location for item in loc" ng-model="Location" ng-init="getLocation()">
+							<option value="item.Id" disabled selected>Select Location</option>
+					</select>
+			</div>
+
+			<div class="form-group">
+					<label for="Category">Category:</label>
+					<select  class="form-control"  ng-options="item.Category for item in cat" ng-model="Category" ng-init="getCategory()">
+							<option value="item.Id" disabled selected>Select Location</option>
+					</select>
+			</div>
+			<div class="form-group">
+					<label for="Photo">Photo Filename:</label>
+					<input type="text" class="form-control" id="phot" placeholder="Enter Photo" ng-model="Photo">
+				  </div>
+			<div class="form-group">
+					<label for="Email">Email:</label>
+					<input type="Email" class="form-control" id="Email" placeholder="Enter Email" ng-model="Email">
+			</div>
+
+			<div class="form-group">
+					<label for="Description">Description:</label>
+					<input type="text" class="form-control" id="description" placeholder="Enter Description" ng-model="Description">
+			</div>
+			<div class="checkbox">
+			  <label><input type="checkbox" name="remember" ng-model="Flag"> Flag</label>
+			</div>
+			<button type="submit" class="btn btn-default" ng-click="saveTenant()">Submit</button>
+		  </form>
+		</div> 
+		<div class="col-md-6">		  <h1>Hello {{Category}}</h1></div>
 	</div>
 </div>
 
 <script lang="javascript">
+
 var app = angular.module('myApp', []);
+
 app.controller('TenantController', function($scope, $http) {
-    $http.get("product.php")
-    .then(function (response) {$scope.names = response.data.records;});
+	$scope.names;
+	$scope.loc;
+	$scope.cat;
+	// function get list of tenant
+	$scope.getTenant = function(){
+		$http.get("product.php?list")
+		.then(function (response) {$scope.names = response.data.records;});
+	};
+
+	// function delete tenant
+	$scope.deleteTenant = function(){
+		$http.get("product.php")
+		.then(function (response) {$scope.names = response.data.records;});
+	};
+
+	//function save tenant
+	var data = $.param({
+                Name: $scope.Name,
+				Location: $scope.Location,
+				Category: $scope.Category,
+				Photo: $scope.Photo,
+				Description: $scope.Description,
+				Email: $scope.Email,
+				Contact: $scope.Contact,
+				Flag: $scope.Flag
+			});
+				
+	var config = {
+	               headers : {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                }
+            }		
+	$scope.saveTenant = function(){
+		$http.post('product-save.php', data, config)
+		.then(function (response) {  $scope.getTenant();console.log(response.data,response.status); });
+	};
+
+	$scope.getLocation = function(){
+		$http.get("product.php?loc")
+		.then(function (response) {$scope.loc = response.data.records;});
+	};
+
+	$scope.getCategory = function(){
+		$http.get("product.php?cat")
+		.then(function (response) {$scope.cat = response.data.records;});
+	};
+	
 });
+
 </script>
 
 </body>

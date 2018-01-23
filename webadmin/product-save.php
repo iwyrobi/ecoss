@@ -1,16 +1,19 @@
 <?php
+require("connect.php");
+$postdata = file_get_contents("php://input");
 
-
-if (if ($_SERVER["REQUEST_METHOD"] == "POST")){
-
-    $name = $_POST["name"];
-    $location = $_POST["location"];
-    $category = $_POST["category"];
-    $photo = $_POST["photo"];
-    $description = $_POST["description"];
-    $email = $_POST["email"];
-    $contact = $_POST["contact"];
-    $flag = $_POST["flag"];
+if (isset($postdata) && !empty($postdata)){
+    $request  = json_decode($postdata);
+    echo "hello var data";
+    var_dump($request);
+    $name = $request['Name'];
+    $location = $request['Location'];
+    $category = $request['Category'];
+    $photo = $request['Photo'];
+    $description = $request['Description'];
+    $email = $request['Email'];
+    $contact = $request['Contact'];
+    $flag = $request['Flag'];
 
     $sql = "INSERT INTO tenant (name,location,category,photo,description, email,contact,flag)
             VALUES ($name, $location, $category, $photo, $description, $email,$contact,$flag)";
@@ -20,8 +23,8 @@ if (if ($_SERVER["REQUEST_METHOD"] == "POST")){
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
+ 
 }
-
 $conn->close();
 
 ?>

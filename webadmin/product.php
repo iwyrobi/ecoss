@@ -38,6 +38,40 @@ header("Content-Type: application/json; charset=UTF-8");
 //$conn = new mysqli("localhost", "root", "", "ecoss");
 
 require("connect.php");
+
+if (isset($_GET['loc'])) {
+    $result = $conn->query("SELECT * FROM location");
+
+    $outp = "";
+    while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
+        if ($outp != "") {$outp .= ",";}
+        $outp .= '{"Id":"'  . $rs["id"] . '",';
+        $outp .= '"Location":"'   . $rs["location"]        . '",';
+        $outp .= '"Level":"'. $rs["level"]     . '"}';
+      
+    }
+    $outp ='{"records":['.$outp.']}';
+    echo($outp);
+
+}
+
+if (isset($_GET['cat'])) {
+    $result = $conn->query("SELECT * FROM category");
+
+    $outp = "";
+    while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
+        if ($outp != "") {$outp .= ",";}
+        $outp .= '{"Id":"'  . $rs["id"] . '",';
+        $outp .= '"Category":"'. $rs["category"]     . '"}';
+      
+    }
+    $outp ='{"records":['.$outp.']}';
+    echo($outp);
+
+}
+
+if (isset($_GET['list'])){
+
 $result = $conn->query("SELECT * FROM tenant");
 
 $outp = "";
@@ -55,7 +89,8 @@ while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
   
 }
 $outp ='{"records":['.$outp.']}';
-$conn->close();
-
 echo($outp);
+}
+
+$conn->close();
 ?>
