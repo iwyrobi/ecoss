@@ -1,15 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
 
 if (if ($_SERVER["REQUEST_METHOD"] == "POST")){
 
@@ -19,10 +9,11 @@ if (if ($_SERVER["REQUEST_METHOD"] == "POST")){
     $photo = $_POST["photo"];
     $description = $_POST["description"];
     $email = $_POST["email"];
-    $kontak = $_POST["kontak"];
+    $contact = $_POST["contact"];
+    $flag = $_POST["flag"];
 
-    $sql = "INSERT INTO tenant (name,location,category,photo,description, email,kontak)
-            VALUES ($name, $location, $category, $photo, $description, $email,$kontak)";
+    $sql = "INSERT INTO tenant (name,location,category,photo,description, email,contact,flag)
+            VALUES ($name, $location, $category, $photo, $description, $email,$contact,$flag)";
 
     if ($conn->query($sql) === TRUE) {
         echo "New record created successfully";
