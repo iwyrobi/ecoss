@@ -72,7 +72,10 @@ if (isset($_GET['cat'])) {
 
 if (isset($_GET['list'])){
 
-$result = $conn->query("SELECT * FROM tenant");
+$result = $conn->query("SELECT tenant.*, location.location as tloc, category.category as tcat
+FROM tenant  LEFT OUTER JOIN location ON tenant.location = location.id
+LEFT OUTER JOIN category ON tenant.category = category.id
+ORDER BY tenant.id");
 
 $outp = "";
 while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -85,6 +88,8 @@ while($rs = $result->fetch_array(MYSQLI_ASSOC)) {
     $outp .= '"Description":"'   . $rs["description"]        . '",';
     $outp .= '"Email":"'   . $rs["email"]        . '",';
     $outp .= '"Contact":"'   . $rs["contact"]        . '",';
+    $outp .= '"Tloc":"'   . $rs["tloc"]        . '",';
+    $outp .= '"Tcat":"'   . $rs["tcat"]        . '",';
     $outp .= '"Flag":"'. $rs["flag"]     . '"}';
   
 }

@@ -10,12 +10,13 @@ app.filter('beginning_data', function() {
     }
 });
 
-app.controller('TenantController', function($scope, $http,$timeout) {
+app.controller('TenantController', function($scope, $http,$timeout,$window) {
 	$scope.names;
 	$scope.loc;
 	$scope.cat;
 	$scope.Flag = 0;
-	$scope.messageSuccess;
+    $scope.messageSuccess;
+    $scope.tloc;
 	// function get list of tenant
 
 
@@ -26,7 +27,7 @@ app.controller('TenantController', function($scope, $http,$timeout) {
 		.then(function (response) {
             $scope.file = response.data.records;
             $scope.current_grid = 1;
-            $scope.data_limit = 2;
+            $scope.data_limit = 5;
             $scope.filter_data = $scope.file.length;
             $scope.entire_user = $scope.file.length;
         
@@ -73,8 +74,24 @@ app.controller('TenantController', function($scope, $http,$timeout) {
 
 	$scope.getLocation = function(){
 		$http.get("product.php?loc")
-		.then(function (response) {$scope.loc = response.data.records;});
-	};
+        .then(function (response) {$scope.loc = response.data.records;});
+        
+     };
+    
+    $scope.cekLoc = function(){
+        $http.get("product.php?loc").then(function (response) { $scope.xloc = response.data.records; });       
+        
+        console.log("helo");
+
+        // var array = [];
+        // angular.forEach(response.data.records, function(row, i){
+        //     array.push(row);
+        //     console.log(row);
+        // });
+
+        
+        
+    }
 
 	$scope.getCategory = function(){
 		$http.get("product.php?cat")

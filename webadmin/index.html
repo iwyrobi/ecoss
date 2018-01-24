@@ -1,128 +1,133 @@
 <!DOCTYPE html>
-<html lang="en-US">
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="style/style.css">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled</title>    
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+</head>
+
 <body>
-
-<div class="container">
-<div ng-app="myApp"  ng-cloak ng-controller="TenantController" ng-init="getTenant()">
-	<div class="row">
-		<div class="col-md-12"><p><h2>Tenant Control panel</h2></p></div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">Tenant List</div>	
-	</div>
-
-	<div class="row" >
-		<!-- show tenant content -->
-		<div class="col-sm-1">  <label>PageSize:</label>
-			<select ng-model="data_limit" class="form-control">
-				<option>2</option>
-				<option>10</option>
-				<option>20</option>
-				<option>50</option>
-				<option>100</option>
-			</select></div>
-		
-			<div class="col-sm-4">
-				<label>Search:</label><input type="text" ng-model="search" ng-change="filter()" placeholder="Search" class="form-control" size="10" />
-			</div>
-
+    <div class="container-fluid" ng-app="myApp"  ng-cloak ng-controller="TenantController" ng-init="getTenant()">
+        <div class="row title">
+            <div class="col-md-12">
+                <h2 class="text-center">Tenant Control Center</h2></div>
 		</div>
+		<div></div>
+        <div class="row panel">
+            <div class="col-md-2 pull-left">
+                    <label>PageSize:</label>
+                    <select ng-model="data_limit" class="form-control">
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+            </div>
+            <div class="col-md-4 pull-right" >
+                    <label>Search:</label><input type="text" ng-model="search" ng-change="filter()" placeholder="Search" class="form-control" />
+            </div>
+        </div>
+        <div class="row table">
+            <div class="col-md-12 " ng-show="filter_data > 0">
 
-	<div class="row">
-		<div class="col-sm-12">
-				<table class="table table-striped table-bordered">
-						<thead>
-								<tr>
-								  <th>Id <a ng-click="sort_with('Id');"><i class="glyphicon glyphicon-sort"></a></th>
-								  <th>Tenant Name <a ng-click="sort_with('Name');"><i class="glyphicon glyphicon-sort"></a></th>
-								  <th>Location</th>
-								  <th>Contact</th>
-								  <th>Action</th>
-								</tr>
-							  </thead>
-								<tr ng-repeat="data in searched = (file | filter:search | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit"  >
-									<td>{{ data.Id }}</td>
-									<td>{{ data.Name }}</td>
-									<td>{{ data.Location }} </td>
-									<td>{{ data.Email }}</td>
-									<td><button class="btn-danger" ng-click="deleteTenant(x.Id)">Delete</button><button ng-click="editTenant(x.Id)">Edit</button></td>
-								</tr>
-					  </table>
-					  <h5>Showing {{ searched.length }} of {{ entire_user}} entries</h5>
-					 
-					  <div class="col-md-6" ng-show="filter_data > 0">
-							<div pagination="" page="current_grid" on-select-page="page_position(page)" boundary-links="true" total-items="filter_data" items-per-page="data_limit" class="pagination-small pull-right" previous-text="&laquo;" next-text="&raquo;"></div>
-					 </div>
-		</div>	
-		<div class="row form" >
-			
-				<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
-				  <label for="Name">Tenant Name:</label>
-				  <input type="text" class="form-control" id="Name" placeholder="Enter Name" ng-model="Name">
-				</div>
 
-				<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
-						<label for="Location">Location:</label>
-						<select class="form-control" 
-								ng-options="x.Id as x.Location for x in loc"
-								ng-model="Location"
-								ng-init="getLocation()">
-						</select>
-				</div>
-	  
-				<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
-						<label for="Category">Category:</label>
-						<select  class="form-control"
-								 ng-options="s.Id as s.Category for s in cat"
-								 ng-model="Category"
-								 ng-init="getCategory()">
-						</select>
-				</div> 
-				
-				<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
-						<label for="Photo">Photo Filename:</label>
-						<input type="text" class="form-control" id="phot" placeholder="Enter Photo" ng-model="Photo">
-				</div>
+                        <table class="table table-striped table-bordered">
+                                <thead>
+                                        <tr>
+                                          <th>Id <a ng-click="sort_with('Id');"><i class="glyphicon glyphicon-sort"></a></th>
+                                          <th>Tenant Name <a ng-click="sort_with('Name');"><i class="glyphicon glyphicon-sort"></a></th>
+                                          <th>Location <a ng-click="sort_with('Tloc');"><i class="glyphicon glyphicon-sort"></a></th>
+                                          <th>Category <a ng-click="sort_with('Tcat');"><i class="glyphicon glyphicon-sort"></a></th>
+                                          <th>Contact</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                        <tr ng-repeat="data in searched = (file | filter:search | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit" >
+                                            <td>{{ data.Id }}</td>
+                                            <td>{{ data.Name }}</td>
+                                            <td>{{data.Tloc}}</td>
+                                            <td>{{data.Tcat}}</td>
+                                            <td>{{ data.Email }}</td>
+                                            <td><button class="btn-danger" ng-click="deleteTenant(x.Id)">Delete</button><button ng-click="editTenant(x.Id)">Edit</button></td>
+                                        </tr>
+                              </table>
+                              <h5>Showing {{ searched.length }} of {{ entire_user}} entries</h5>
 
-				<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
-						<label for="Email">Email:</label>
-						<input type="Email" class="form-control" id="Email" placeholder="Enter Email" ng-model="Email">
-				</div>
+                
+            </div>
+            <div class="col-md-6" ng-show="filter_data > 0">
+                    <div pagination="" page="current_grid" on-select-page="page_position(page)" boundary-links="true" total-items="filter_data" items-per-page="data_limit" class="pagination-small pull-right" previous-text="&laquo;" next-text="&raquo;"></div>
+             </div>
+        </div>
+        <div class="row form">
+
+            	<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                        <label for="Name">Tenant Name:</label>
+                        <input type="text" class="form-control" id="Name" placeholder="Enter Name" ng-model="Name">
+                      </div>
+      
+                      <div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                              <label for="Location">Location:</label>
+                              <select class="form-control" 
+                                      ng-options="x.Id as x.Location for x in loc"
+                                      ng-model="Location"
+                                      ng-init="getLocation()">
+                              </select>
+                      </div>
+            
+                      <div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                              <label for="Category">Category:</label>
+                              <select  class="form-control"
+                                       ng-options="s.Id as s.Category for s in cat"
+                                       ng-model="Category"
+                                       ng-init="getCategory()">
+                              </select>
+                      </div> 
+                      
+                      <div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                              <label for="Photo">Photo Filename:</label>
+                              <input type="text" class="form-control" id="phot" placeholder="Enter Photo" ng-model="Photo">
+                      </div>
+      
+                      <div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                              <label for="Email">Email:</label>
+                              <input type="Email" class="form-control" id="Email" placeholder="Enter Email" ng-model="Email">
+                      </div>
+          
+                      <div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                              <label for="Description">Description:</label>
+                              <input type="text" class="form-control" id="description" placeholder="Enter Description" ng-model="Description">
+                      </div>
+      
+                      <div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                          <label for="Phone:"></label>
+                           <input type="text" class="form-control" id="phone" placeholder="Enter Phone" ng-model="Contact">
+                         </div>
+
+                     <div class="checkbox col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                             <label><input type="checkbox" name="remember" ng-model="Flag" ng-true-value=1 ng-false-value=0 > Flag</label>
+                         </div>
+                     <div class ="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                              <button type="submit" class="btn btn-success" ng-click="saveTenant()"> <i class="glyphicon glyphicon-ok-sign"></i> Submit</button>
+                     </div>	
+
+        </div>
+
+        <div class="alert alert-success alert-dismissable row">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{messageSuccess}}
+              </div>
+        
+    
+        </div>
+    </div>
+    <script src="script/angular.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+	<script src="script/myscript.js"></script>
 	
-				<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
-						<label for="Description">Description:</label>
-						<input type="text" class="form-control" id="description" placeholder="Enter Description" ng-model="Description">
-				</div>
-
-				<div class="form-group col-xs-10 col-sm-6 col-md-6 col-lg-6">
-					<label for="Phone:"></label>
-					 <input type="text" class="form-control" id="phone" placeholder="Enter Phone" ng-model="Contact">
-				   </div>
-	
-				<div class="checkbox col-xs-10 col-sm-6 col-md-6 col-lg-6">
-				  <label><input type="checkbox" name="remember" ng-model="Flag" ng-true-value=1 ng-false-value=0 > Flag</label>
-				</div>
-				<div class ="col-xs-10 col-sm-6 col-md-6 col-lg-6">
-				<button type="submit" class="btn btn-success" ng-click="saveTenant()"> <i class="glyphicon glyphicon-ok-sign"></i> Submit</button>
-				</div>		  
-		</div>	
-	</div> <!-- end row -->
-
-
-	<div class="alert alert-success alert-dismissable row">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			{{messageSuccess}}
-		  </div>
-	
-
-	</div>
-</div>
-<script src="script/angular.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
-<script src="script/myscript.js"></script>
 </body>
+
 </html>
