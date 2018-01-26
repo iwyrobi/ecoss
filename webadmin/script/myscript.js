@@ -23,6 +23,7 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
 	$('.alert').hide();
 
 	$scope.getTenant = function(){
+		
 		$http.get("product.php?list")
 		.then(function (response) {
             $scope.file = response.data.records;
@@ -36,12 +37,14 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
 
     $scope.page_position = function(page_number) {
         $scope.current_grid = page_number;
-    };
+	};
+	
     $scope.filter = function() {
         $timeout(function() {
             $scope.filter_data = $scope.searched.length;
         }, 20);
-    };
+	};
+	
     $scope.sort_with = function(base) {
         $scope.base = base;
         $scope.reverse = !$scope.reverse;
@@ -68,32 +71,17 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
 			  $scope.messageSuccess= response.data;
 			  $('.alert').show();
 			  $scope.emptyForm();
-		      //console.log(response.data,response.status); 
+		     
 			  });
 	};
 
 	$scope.getLocation = function(){
 		$http.get("product.php?loc")
-        .then(function (response) {$scope.loc = response.data.records;});
+        .then(function (response) {$scope.loc = response.data.records; });
         
      };
     
-    $scope.cekLoc = function(){
-        $http.get("product.php?loc").then(function (response) { $scope.xloc = response.data.records; });       
-        
-        console.log("helo");
-
-        // var array = [];
-        // angular.forEach(response.data.records, function(row, i){
-        //     array.push(row);
-        //     console.log(row);
-        // });
-
-        
-        
-    }
-
-	$scope.getCategory = function(){
+ 	$scope.getCategory = function(){
 		$http.get("product.php?cat")
 		.then(function (response) {$scope.cat = response.data.records;});
 	};
@@ -107,7 +95,23 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
 				$scope.Email="";
 				$scope.Contact="";
 				$scope.Flag="";
-	}
+	};
+
+	$scope.editTenant = function(tId){
+		console.log("terst");
+		$http.get("product.php?id="+tId)
+		.then(function (response) {
+			$scope.tData = response.data.records;
+				$scope.Name = $scope.tData.Name;
+				$scope.Location= $scope.tData.Location;
+				$scope.Category= $scope.tData.Category;
+				$scope.Photo= $scope.tData.Photo;
+				$scope.Description= $scope.tData.Description;
+				$scope.Email= $scope.tData.Email;
+				$scope.Contact= $scope.tData.Contact;
+				$scope.Flag= $scope.tData.Flag;
+		});
+	};
 	
 });
 

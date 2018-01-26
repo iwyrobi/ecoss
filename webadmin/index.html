@@ -44,15 +44,15 @@
                                         </tr>
                                       </thead>
                                         <tr ng-repeat="data in searched = (file | filter:search | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit" >
-                                            <td>{{ data.Id }}</td>
-                                            <td>{{ data.Name }}</td>
+                                            <td>{{data.Id }}</td>
+                                            <td>{{data.Name }}</td>
                                             <td>{{data.Tloc}}</td>
                                             <td>{{data.Tcat}}</td>
-                                            <td>{{ data.Email }}</td>
+                                            <td>{{data.Email }}</td>
                                             <td><button class="btn-danger" ng-click="deleteTenant(x.Id)">Delete</button><button ng-click="editTenant(x.Id)">Edit</button></td>
                                         </tr>
                               </table>
-                              <h5>Showing {{ searched.length }} of {{ entire_user}} entries</h5>
+                              <h5>Showing {{ searched.length }} of {{ entire_user}} entries {{tdata.Name}}</h5>
 
                 
             </div>
