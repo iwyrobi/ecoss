@@ -49,13 +49,18 @@
                                             <td>{{data.Tloc}}</td>
                                             <td>{{data.Tcat}}</td>
                                             <td>{{data.Email }}</td>
-                                            <td><button class="btn-danger" ng-click="deleteTenant(x.Id)">Delete</button><button ng-click="editTenant(x.Id)">Edit</button></td>
+                                            <td>
+                                                <button class="btn-warning" ng-click="editTenant(data.Id)"> <i class="glyphicon glyphicon-menu-down"></i>Edit</button>
+                                                <button class="btn-danger"  ng-click="$parent.delId = data.Id; $parent.delName = data.Name;cancelEdit()" data-toggle="modal" data-target="#delDialog"><i class="glyphicon glyphicon-minus-sign"></i> Delete</button>
+
+                                            </td>
                                         </tr>
                               </table>
-                              <h5>Showing {{ searched.length }} of {{ entire_user}} entries {{tdata.Name}}</h5>
+                             <h5>Showing {{ searched.length }} of {{ entire_user}} entries </h5>
+                </div>
 
-                
-            </div>
+            
+
             <div class="col-md-6" ng-show="filter_data > 0">
                     <div pagination="" page="current_grid" on-select-page="page_position(page)" boundary-links="true" total-items="filter_data" items-per-page="data_limit" class="pagination-small pull-right" previous-text="&laquo;" next-text="&raquo;"></div>
              </div>
@@ -106,10 +111,12 @@
                          </div>
 
                      <div class="checkbox col-xs-10 col-sm-6 col-md-6 col-lg-6">
-                             <label><input type="checkbox" name="remember" ng-model="Flag" ng-true-value=1 ng-false-value=0 > Flag</label>
+                             <label><input type="checkbox" name="remember" ng-model="Flag" ng-true-value=1 ng-false-value=0 ng-checked="Flag==1"> Flag</label>
                          </div>
                      <div class ="col-xs-10 col-sm-6 col-md-6 col-lg-6">
+                                <input type="hidden" name="edit" value="{{editData}}" /> 
                               <button type="submit" class="btn btn-success" ng-click="saveTenant()"> <i class="glyphicon glyphicon-ok-sign"></i> Submit</button>
+                              <button class="btn btn-warning" ng-click="cancelEdit()"> <i class="glyphicon glyphicon-erase"></i> Cancel</button>
                      </div>	
 
         </div>
@@ -119,14 +126,37 @@
                 {{messageSuccess}}
               </div>
         
-    
+         <!-- Modal dialog delete-->
+  <div class="modal fade" id="delDialog" role="dialog">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Delete Data Id: {{delId}}</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p>Delete <strong>{{delName}}</strong> dari database? </p>
+                    </div>
+                    <div class="modal-footer">
+                       <button ng-click = "deleteTenant(delId)" type="button" class="btn btn-danger" data-dismiss="modal">Yes Sure</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+                <!-- end modal -->
         </div>
     </div>
+
+
+    
     <script src="script/angular.min.js"></script>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
-	<script src="script/myscript.js"></script>
+	<script src="script/myscript.js?1"></script>
 	
 </body>
 

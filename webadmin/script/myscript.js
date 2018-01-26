@@ -16,9 +16,13 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
 	$scope.cat;
 	$scope.Flag = 0;
     $scope.messageSuccess;
-    $scope.tloc;
+	$scope.tloc;
+	$scope.editData=false;
+	$scope.Id;
+	$scope.delId;
+	$scope.delName;
 	// function get list of tenant
-
+	console.log($scope.editData);
 
 	$('.alert').hide();
 
@@ -31,13 +35,14 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
             $scope.data_limit = 5;
             $scope.filter_data = $scope.file.length;
             $scope.entire_user = $scope.file.length;
-        
+			
         });
 	};
 
     $scope.page_position = function(page_number) {
         $scope.current_grid = page_number;
 	};
+	
 	
     $scope.filter = function() {
         $timeout(function() {
@@ -51,13 +56,21 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
     };
 
 	// function delete tenant
-	$scope.deleteTenant = function(){
-		$http.get("product.php")
-		.then(function (response) {$scope.names = response.data.records;});
+	$scope.deleteTenant = function(idToDel){
+		
+		$http.get("product-del.php",{params: {del : idToDel}})
+		.then(function (response) {
+			console.log(response.data);
+			$scope.getTenant();
+		});
 	};
 
+
+	
 	//function save tenant	
 	$scope.saveTenant = function(){
+		console.log($scope.editData)
+	if ($scope.editData==false)	{
 		$http.post('product-save.php',{Name: $scope.Name,
 				Location: $scope.Location,
 				Category: $scope.Category,
@@ -73,6 +86,28 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
 			  $scope.emptyForm();
 		     
 			  });
+	}else{
+		$http.post('product-edit.php',{
+			Id: $scope.Id,
+			Name: $scope.Name,
+			Location: $scope.Location,
+			Category: $scope.Category,
+			Photo: $scope.Photo,
+			Description: $scope.Description,
+			Email: $scope.Email,
+			Contact: $scope.Contact,
+			Flag: $scope.Flag})
+	.then(function (response) {
+		  $scope.getTenant();
+		  $scope.messageSuccess= response.data;
+		  $('.alert').show();
+		  $scope.emptyForm();
+		  $scope.editData = false;
+   
+		  });
+
+
+	}		  
 	};
 
 	$scope.getLocation = function(){
@@ -97,19 +132,31 @@ app.controller('TenantController', function($scope, $http,$timeout,$window) {
 				$scope.Flag="";
 	};
 
+	$scope.cancelEdit = function(){
+		$scope.emptyForm();
+		$scope.editData = false;
+
+	};
+	
 	$scope.editTenant = function(tId){
-		console.log("terst");
-		$http.get("product.php?id="+tId)
-		.then(function (response) {
-			$scope.tData = response.data.records;
-				$scope.Name = $scope.tData.Name;
-				$scope.Location= $scope.tData.Location;
-				$scope.Category= $scope.tData.Category;
-				$scope.Photo= $scope.tData.Photo;
-				$scope.Description= $scope.tData.Description;
-				$scope.Email= $scope.tData.Email;
-				$scope.Contact= $scope.tData.Contact;
-				$scope.Flag= $scope.tData.Flag;
+		
+		$scope.editData = true;
+		console.log($scope.editData);
+		$http.get("product.php",{params:{id:tId}})
+		.then(function (response) {			
+			   $scope.tData = response.data.records;
+				console.log($scope.tData);
+				var data = angular.fromJson($scope.tData);
+
+				$scope.Id = data[0].Id;
+				$scope.Name = data[0].Name;
+				$scope.Location= data[0].Location;
+				$scope.Category= data[0].Category;
+				$scope.Photo= data[0].Photo;
+				$scope.Description= data[0].Description;
+				$scope.Email= data[0].Email;
+				$scope.Contact= data[0].Contact;
+				$scope.Flag= data[0].Flag;				
 		});
 	};
 	
